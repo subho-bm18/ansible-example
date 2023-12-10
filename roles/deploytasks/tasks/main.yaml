@@ -4,3 +4,11 @@
     src : abc.txt
     dest : /tmp
     mode : 077
+
+- name : List all files in /var/log
+  command: ls /var/log
+  register: files
+
+- name: Show Files
+  debug:
+    msg: "{{ files.stdout_lines }}"
