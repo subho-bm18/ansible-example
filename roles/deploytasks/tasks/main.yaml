@@ -1,0 +1,6 @@
+---
+- name : Copy Files from one loc to another
+  copy:
+    src : abc.txt
+    dest : /tmp
+    mode : 077

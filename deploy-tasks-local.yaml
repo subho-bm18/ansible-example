@@ -1,0 +1,5 @@
+---
+# Deploy NodeHunter
+- hosts: lab1
+  roles:
+  - deploytasks
