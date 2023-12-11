@@ -1,0 +1,66 @@
+- name: Test Playbook
+  hosts: localhost
+  tasks:
+    - name: Include vars from vault
+      include_vars:
+        file: my_vault.yml
+        name: my_vault
+
+# playbook.yml
+- hosts: servers
+  vars_files:
+    - my_vault.yml
+  tasks:
+    - name: Check connection
+      ping:
+
+
+# playbook.yml
+- hosts: servers
+  tasks:
+    - name: Include vars from vault
+      include_vars: my_vault.yml
+    - name: Check connection
+      ping:
+
+
+
+# inventory.ini
+[servers]
+192.168.1.1 ansible_ssh_user=username
+
+
+Can I use for loop here + - hosts: lab1
+
+- hosts: lab1
+  vars_files:
+    - my_vault.yml
+  roles:
+    - deploytasks
+  vars:
+    ansible_ssh_pass: "{{ ansible_password }}"
+  tasks:
+    - name: Install multiple packages
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - package1
+        - package2
+        - package3
+
+n this example, the loop is used to install multiple packages with a single task. The loop keyword is followed by a list of package names, and the {{ item }} placeholder is used to refer to the current item in the loop.
+
+If you want to loop over hosts in a play, you don't need a loop for that. When you specify hosts: lab1 in a play, Ansible will automatically run the play on all hosts that are part of the lab1 group in your inventory file.
+
+If you want to perform tasks on a set of hosts one by one, you can control the order in which hosts are run by using the serial keyword at the play level:
+
+
+- hosts: lab1
+  serial: 1
+  vars_files:
+    - my_vault.yml
+  roles:
+    - deploytasks
+  vars:
+    ansible_ssh_pass: "{{ ansible_password }}"
